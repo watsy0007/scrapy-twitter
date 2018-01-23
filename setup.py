@@ -7,7 +7,7 @@ setup(
     name='scrapy-twitter',
     version='0.1',
     description='Twitter API wrapper for scrapy',
-    url='http://github.com/yall/scrapy-twitter',
+    url='http://github.com/watsy0007/scrapy-twitter',
     author='Jonathan Geslin',
     author_email='jonathan.geslin@gmail.com',
     license='MIT',
