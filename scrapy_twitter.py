@@ -66,7 +66,7 @@ class TwitterDownloaderMiddleware(object):
         if isinstance(request, TwitterUserTimelineRequest):
             tweets = self.api.GetUserTimeline(screen_name=request.screen_name,
                                               count=request.count,
-					      since_id=request.since_id,
+                                              since_id=request.since_id,
                                               max_id=request.max_id)
             return TwitterResponse(tweets=[tweet.AsDict() for tweet in tweets])
 
