@@ -13,7 +13,6 @@ class TwitterUserTimelineRequest(Request):
         self.count = kwargs.pop('count', None)
         self.since_id = kwargs.pop('since_id', None)
         self.max_id = kwargs.pop('max_id', None)
-        self.tweet_mode = kwargs.pop('tweet_mode', None)
         super(TwitterUserTimelineRequest, self).__init__('https://twitter.com',
                                                          dont_filter=True,
                                                          **kwargs)
@@ -41,11 +40,13 @@ class TwitterDownloaderMiddleware(object):
 
     def __init__(self,
                  consumer_key, consumer_secret,
-                 access_token_key, access_token_secret):
+                 access_token_key, access_token_secret,
+                 tweet_mode):
         self.api = twitter.Api(consumer_key=consumer_key,
                                consumer_secret=consumer_secret,
                                access_token_key=access_token_key,
-                               access_token_secret=access_token_secret)
+                               access_token_secret=access_token_secret,
+                               tweet_mode=tweet_mode)
         log.msg('Using creds [CONSUMER KEY: %s, ACCESS TOKEN KEY: %s]' %
                 (consumer_key, access_token_key),
                 level=log.INFO)
@@ -57,10 +58,14 @@ class TwitterDownloaderMiddleware(object):
         consumer_secret = settings['TWITTER_CONSUMER_SECRET']
         access_token_key = settings['TWITTER_ACCESS_TOKEN_KEY']
         access_token_secret = settings['TWITTER_ACCESS_TOKEN_SECRET']
+        tweet_mode = settings['TWITTER_TEXT_MODE']
+        if tweet_mode is None:
+            tweet_mode = 'compat'
         return cls(consumer_key,
                    consumer_secret,
                    access_token_key,
-                   access_token_secret)
+                   access_token_secret,
+                   tweet_mode)
 
     def process_request(self, request, spider):
 
@@ -68,8 +73,7 @@ class TwitterDownloaderMiddleware(object):
             tweets = self.api.GetUserTimeline(screen_name=request.screen_name,
                                               count=request.count,
                                               since_id=request.since_id,
-                                              max_id=request.max_id,
-                                              tweet_mode=request.tweet_mode)
+                                              max_id=request.max_id)
             return TwitterResponse(tweets=[tweet.AsDict() for tweet in tweets])
 
         if isinstance(request, TwitterStreamFilterRequest):
