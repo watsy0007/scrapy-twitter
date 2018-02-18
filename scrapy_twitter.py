@@ -13,6 +13,7 @@ class TwitterUserTimelineRequest(Request):
         self.count = kwargs.pop('count', None)
         self.since_id = kwargs.pop('since_id', None)
         self.max_id = kwargs.pop('max_id', None)
+        self.tweet_mode = kwargs.pop('tweet_mode', None)
         super(TwitterUserTimelineRequest, self).__init__('https://twitter.com',
                                                          dont_filter=True,
                                                          **kwargs)
@@ -67,7 +68,8 @@ class TwitterDownloaderMiddleware(object):
             tweets = self.api.GetUserTimeline(screen_name=request.screen_name,
                                               count=request.count,
                                               since_id=request.since_id,
-                                              max_id=request.max_id)
+                                              max_id=request.max_id,
+                                              tweet_mode=request.tweet_mode)
             return TwitterResponse(tweets=[tweet.AsDict() for tweet in tweets])
 
         if isinstance(request, TwitterStreamFilterRequest):
