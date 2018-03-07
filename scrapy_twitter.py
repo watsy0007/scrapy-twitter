@@ -40,6 +40,7 @@ class TwitterResponse(Response):
 
     def __init__(self, *args, **kwargs):
         self.tweets = kwargs.pop('tweets', None)
+        self.user = kwargs.pop('user', None)
         super(TwitterResponse, self).__init__('https://twitter.com',
                                               *args,
                                               **kwargs)
@@ -90,9 +91,9 @@ class TwitterDownloaderMiddleware(object):
             return TwitterResponse(tweets=[tweet.AsDict() for tweet in tweets])
 
         if isinstance(request, TwitterUserShowRequest):
-            return TwitterResponse({'user': self.api.GetUser(include_entities=request.include_entities,
-                                                             screen_name=request.screen_name,
-                                                             user_id=request.user_id).asDict()})
+            return TwitterResponse(user=self.api.GetUser(include_entities=request.include_entities,
+                                                         screen_name=request.screen_name,
+                                                         user_id=request.user_id).AsDict())
 
         if isinstance(request, TwitterStreamFilterRequest):
             tweets = self.api.GetStreamFilter(track=request.track)
