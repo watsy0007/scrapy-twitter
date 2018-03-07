@@ -18,6 +18,16 @@ class TwitterUserTimelineRequest(Request):
                                                          **kwargs)
 
 
+class TwitterUserShowRequest(Request):
+
+    def __init__(self, *args, **kwargs):
+        self.screen_name = kwargs.pop('screen_name', None)
+        self.user_id = kwargs.pop('user_id', None)
+        self.include_entities = kwargs.pop('include_entities', False)
+        super(TwitterUserShowRequest, self).__init__('https://twitter.com',
+                                                         dont_filter=True,
+                                                         **kwargs)
+
 class TwitterStreamFilterRequest(Request):
 
     def __init__(self, *args, **kwargs):
@@ -75,6 +85,15 @@ class TwitterDownloaderMiddleware(object):
                                               since_id=request.since_id,
                                               max_id=request.max_id)
             return TwitterResponse(tweets=[tweet.AsDict() for tweet in tweets])
+
+        if isinstance(request, TwitterUserShowRequest):
+            kwargs = {'include_entities': request.include_entities}
+            if request.screen_name is not None:
+                kwargs['screen_name'] = request.screen_name
+            if request.user_id is not None:
+                kwargs['user_id'] = request.user_id
+            return TwitterResponse(self.api.UserShow(**kwargs))
+
 
         if isinstance(request, TwitterStreamFilterRequest):
             tweets = self.api.GetStreamFilter(track=request.track)
