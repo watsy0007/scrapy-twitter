@@ -92,7 +92,7 @@ class TwitterDownloaderMiddleware(object):
         if isinstance(request, TwitterUserShowRequest):
             return TwitterResponse({'user': self.api.GetUser(include_entities=request.include_entities,
                                                              screen_name=request.screen_name,
-                                                             user_id=request.user_id)})
+                                                             user_id=request.user_id).asDict()})
 
         if isinstance(request, TwitterStreamFilterRequest):
             tweets = self.api.GetStreamFilter(track=request.track)
