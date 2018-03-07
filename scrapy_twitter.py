@@ -91,7 +91,7 @@ class TwitterDownloaderMiddleware(object):
                 kwargs['screen_name'] = request.screen_name
             if request.user_id is not None:
                 kwargs['user_id'] = request.user_id
-            return TwitterResponse(self.api.UsersShow(**kwargs))
+            return TwitterResponse(self.api.GetUser(**kwargs))
 
         if isinstance(request, TwitterStreamFilterRequest):
             tweets = self.api.GetStreamFilter(track=request.track)
