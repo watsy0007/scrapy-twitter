@@ -24,8 +24,8 @@ class TwitterUserShowRequest(Request):
         self.user_id = kwargs.pop('user_id', None)
         self.include_entities = kwargs.pop('include_entities', False)
         super(TwitterUserShowRequest, self).__init__('https://twitter.com',
-                                                         dont_filter=True,
-                                                         **kwargs)
+                                                     dont_filter=True,
+                                                     **kwargs)
 
 class TwitterStreamFilterRequest(Request):
 
