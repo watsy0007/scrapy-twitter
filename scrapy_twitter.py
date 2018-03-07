@@ -50,12 +50,14 @@ class TwitterDownloaderMiddleware(object):
     def __init__(self,
                  consumer_key, consumer_secret,
                  access_token_key, access_token_secret,
-                 tweet_mode):
+                 tweet_mode,
+                 proxies):
         self.api = twitter.Api(consumer_key=consumer_key,
                                consumer_secret=consumer_secret,
                                access_token_key=access_token_key,
                                access_token_secret=access_token_secret,
-                               tweet_mode=tweet_mode)
+                               tweet_mode=tweet_mode,
+                               proxies=proxies)
         log.msg('Using creds [CONSUMER KEY: %s, ACCESS TOKEN KEY: %s]' %
                 (consumer_key, access_token_key),
                 level=log.INFO)
@@ -68,13 +70,15 @@ class TwitterDownloaderMiddleware(object):
         access_token_key = settings['TWITTER_ACCESS_TOKEN_KEY']
         access_token_secret = settings['TWITTER_ACCESS_TOKEN_SECRET']
         tweet_mode = settings['TWITTER_TEXT_MODE']
+        proxies = settings['PROXIES']
         if tweet_mode is None:
             tweet_mode = 'compat'
         return cls(consumer_key,
                    consumer_secret,
                    access_token_key,
                    access_token_secret,
-                   tweet_mode)
+                   tweet_mode,
+                   proxies)
 
     def process_request(self, request, spider):
 
