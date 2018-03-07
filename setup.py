@@ -5,11 +5,11 @@ Setup script for PyPi
 from distutils.core import setup
 setup(
     name='scrapy-twitter',
-    version='0.1.3',
+    version='0.1.4',
     description='Twitter API wrapper for scrapy',
     url='http://github.com/watsy0007/scrapy-twitter',
-    author='Jonathan Geslin',
-    author_email='jonathan.geslin@gmail.com',
+    author='watsy0007',
+    author_email='watsy0007@gmail.com',
     license='MIT',
     py_modules=['scrapy_twitter'],
     install_requires=[
